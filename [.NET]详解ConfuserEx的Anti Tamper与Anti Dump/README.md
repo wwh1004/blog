@@ -1,30 +1,37 @@
 # [.NET]详解ConfuserEx的Anti Tamper与Anti Dump by Wwh / NCK
 
----
-许多人都知道利用dnSpy单步调试+Dump+CodeCracker的一系列工具可以脱去ConfuserEx壳，这些在网上都有教程，但是并没有文章说明过背后的原理。本文讲尽可能详细解说ConfuserEx的Anti Tamper与Anti Dump**（有耐心并且了解一点点的PE结构完全可以看懂）**
+许多人都知道利用dnSpy单步调试+Dump+CodeCracker的一系列工具可以脱去ConfuserEx壳，这些在网上都有教程，但是并没有文章说明过背后的原理。本文讲尽可能详细解说ConfuserEx的Anti Tamper与Anti Dump。
+
+**（有耐心并且了解一点点的PE结构完全可以看懂）**
 
 ## ConfuserEx整个项目结构
 
----
 在开始讲解之前，我们大概了解一下ConfuserEx项目的结构。
+
 我们用Visual Studio打开ConfuserEx，项目大概是这样的：
+
 ![ConfuserEx项目结构](./ConfuserEx项目结构.png)
-Confuser.CLI的是命令行版本，类似de4dot的操作方式
-Confuser.Core是核心，把所有部分Protection组合到一起
-Confuser.DynCipher可以动态生成加密算法
-Confuser.Protections里面包含了所有Protection，这是需要研究的部分
-Confuser.Renamer可以对类名、方法名等重命名，包括多种重命名方式，比如可逆的重命名，这些没有在ConfuserEx的GUI里面显示就是了
-Confuser.Runtime是运行时，比如Anti Dump的实现，其实就在这个项目里面。上面提到的Confuser.Protections会把Confuser.Runtime中的Anti Dump的实现注入到目标程序集。
-ConfuserEx是GUI，没必要多说。
+
+- Confuser.CLI的是命令行版本，类似de4dot的操作方式。
+- Confuser.Core是核心，把所有部分Protection组合到一起。
+- Confuser.DynCipher可以动态生成加密算法。
+- Confuser.Protections里面包含了所有Protection，这是需要研究的部分。
+- Confuser.Renamer可以对类名、方法名等重命名，包括多种重命名方式，比如可逆的重命名，这些没有在ConfuserEx的GUI里面显示就是了。
+- Confuser.Runtime是运行时，比如Anti Dump的实现，其实就在这个项目里面。上面提到的Confuser.Protections会把Confuser.Runtime中的Anti Dump的实现注入到目标程序集。
+- ConfuserEx是GUI，没必要多说。
+
 **整个项目几乎没什么注释，下面的中文注释均为我添加的。**
 
 ## Anti Dump
 
----
 Anti Dump比起Anti Tamper简单不少，所以我们先来了解一下Anti Dump。
+
 Anti Dump的实现只有一个方法，非常简洁。
+
 我们找到Confuser.Protections项目的AntiDumpProtection.cs。
+
 ![AntiDumpProtection.cs](./AntiDumpProtection.cs.png)
+
 ``` csharp
 protected override void Execute(ConfuserContext context, ProtectionParameters parameters) {
     TypeDef rtType = context.Registry.GetService<IRuntimeService>().GetRuntimeType("Confuser.Runtime.AntiDump");
@@ -49,9 +56,12 @@ protected override void Execute(ConfuserContext context, ProtectionParameters pa
     }
 }
 ```
+
 AntiDumpProtection做的只是注入，所以我们转到Confuser.Runtime中的AntiDump.cs
+
 ![AntiDump.cs](./AntiDump.cs.png)
-```csharp
+
+``` csharp
 static unsafe void Initialize() {
     uint old;
     Module module = typeof(AntiDump).Module;
@@ -310,13 +320,18 @@ static unsafe void Initialize() {
     }
 }
 ```
+
 这里面修改导入表的部分其实是可有可无的，这个是可逆的
-清空节名称也是是可选的
+清空节名称也是是可选的。
+
 其中非常重点的是将IMAGE_COR20_HEADER.MetaData清零，CLR已经完成了元数据的定位，并且保存了有关数据（可以使用CE搜索内存验证，搜索ImageBase+MetaData.VirtualAddress），不再需要这个字段，是可以清零的，但是我们读取元数据，是需要这个字段的。
+
 接下来Anti Dump会删除BSJB标志，这样就无法搜索到STORAGESIGNATURE了。还有元数据流头的rcName字段，一并清零，这样也会让我们无法定位到元数据结构体，但是CLR不再需要这些了。
 
 解决这个的办法很简单，把&lt;Module&gt;::.cctor()的call void Confuser.Runtime.AntiDump::Initialize()这条指令nop掉。我们要如何定位到这条指令呢？
+
 这里有个投机取巧的办法，解决Anti Tamper之后，在dnSpy里面找出现了
+
 ``` csharp
 Module module = typeof(AntiDump).Module;
 byte* bas = (byte*)Marshal.GetHINSTANCE(module);
@@ -324,24 +339,30 @@ byte* bas = (byte*)Marshal.GetHINSTANCE(module);
 if (module.FullyQualifiedName[0] != '<'){
 }
 ```
-这样的方法，并且这个方法还多次调用了VirtualProtect，原版ConfuserEx是调用了14次。把call 这个方法的地方nop掉，注意显示模式切换到IL，然后点一下IL所在的FileOffset，用十六进制编辑器改成0，不然容易出问题。
+
+这样的方法，并且这个方法还多次调用了VirtualProtect，原版ConfuserEx是调用了14次。
+
+把call 这个方法的地方nop掉，注意显示模式切换到IL，然后点一下IL所在的FileOffset，用十六进制编辑器改成0，不然容易出问题。
 
 ## Anti Tamper
 
----
 **Anti Tamper稍微麻烦一些，看不懂的地方实际操作一下，到ConfuserEx项目里面调试一下！！！！！！**
 
----
 ### 分析
 
----
 ConfuserEx里面有2种AntiTamper模式，一种的Hook JIT，另一种是原地解密。Hook JIT算是半成品，还没法正常使用，所以我们实际上看到的是原地解密模式，强度不是特别高。
+
 我们转到Confuser.Protections项目的AntiTamper\NormalMode.cs
+
 ![NormalMode.cs](./NormalMode.cs.png)
+
 这里我就不注释了，因为这里也是一个注入器，和AntiDumpProtection.cs是差不多的，看不懂也没关系，看我后面分析实际实现就能明白了。
+
 找到AntiTamper的实现AntiTamper.Normal.cs
+
 ![AntiTamper.Normal.cs](./AntiTamper.Normal.cs.png)
-```csharp
+
+``` csharp
 static unsafe void Initialize() {
 	Module m = typeof(AntiTamperNormal).Module;
 	string n = m.FullyQualifiedName;
@@ -429,18 +450,27 @@ static unsafe void Initialize() {
 }
 ```
 上面是我注释的，实际上的解密写在了最末尾"*e ^= y[h & 0xf];"，前面一大坨代码都是计算出key和要解密数据的位置。
+
 为什么可以解密？因为xor 2次相同的值，等于xor 0，比如123 ^ 456 ^ 456 == 123。
+
 那么这段代码究竟解密了什么呢？
+
 我们先了解一下元数据表的Method表
+
 ![dnSpy-Method-RVA](./dnSpy-Method-RVA.png)
+
 我用红框标记的RVA指向了方法体的数据，方法体里面存放了ILHeader ILCode LocalVar EH。
+
 ConfuserEx会修改RVA，让RVA指向另一个红框"章节 #0: 乱码"，这个Section专门存放了方法体（模块静态构造器和Anti Tamper本身的方法体不在这个节里面，否则都没法运行了）。
+
 ConfuserEx会加密这一个节的内容。因为模块静态构造器是比程序集入口点更优先执行的，所以模块静态构造器的第一条IL指令就是call void AntiTamper::Initialize()。
-在程序集运行时会首先执行这一条IL指令，其它方法都会被解密，程序就可以正常的运行下去了。这种方法比Hook JIT的兼容性好非常多，几乎不可能出现无法运行的问题。但是这种方法的强度也是远不如Hook JIT的，尤其是那种用一个非托管DLL来Hook JIT，还给非托管DLL加个vmp壳的（说的哪几个壳应该都清除）。
+
+在程序集运行时会首先执行这一条IL指令，其它方法都会被解密，程序就可以正常的运行下去了。
+
+这种方法比Hook JIT的兼容性好非常多，几乎不可能出现无法运行的问题。但是这种方法的强度也是远不如Hook JIT的。
 
 ### AntiTamperKiller成品
 
----
 刚才我们已经分析完了Anti Tamper，如果你看懂了，你也能写出一个Anti Tamper的静态脱壳机（dnSpy Dump法是有可能损坏数据的，静态脱壳仅仅解密了一个节的数据）
 
 Anti Tamper脱壳机下载：
