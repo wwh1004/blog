@@ -10,7 +10,7 @@ ILProtector应该算是一款强度不是太高，兼容性还不错的壳，网
 
 在研究之前，我们还是需要找到一个ILProtector加壳的样本。很遗憾，没在网上找到最新ILProtector加壳的UnpackMe，所以我们直接拿ILProtector主程序开刀（官网上写了"ILProtector is protected by itself!"）。
 
-在研究的时候，用的是2.0.22.4版本的ILProtector，但是写文章的时候发现ILProtector更新到了2.0.22.5，有点尴尬。但是我测试过了，2.0.22.5和2.0.22.4并没有区别，所以本文还是以ILProtector v2.0.22.4主程序为样本来研究。这里提供打包好的文件下载：[ILProtector v2.0.22.4.7z](./ILProtector v2.0.22.4.7z)
+在研究的时候，用的是2.0.22.4版本的ILProtector，但是写文章的时候发现ILProtector更新到了2.0.22.5，有点尴尬。但是我测试过了，2.0.22.5和2.0.22.4并没有区别，所以本文还是以ILProtector v2.0.22.4主程序为样本来研究。这里提供打包好的文件下载：[ILProtector v2.0.22.4.7z](https://github.com/wwh1004/blog/raw/master/%5B.NET%5D%E8%AF%A6%E8%A7%A3ILProtector%E5%B9%B6%E5%86%99%E5%87%BA%E8%84%B1%E5%A3%B3%E6%9C%BA/ILProtector%20v2.0.22.4.7z)
 
 ## ILProtector保护方式概览
 
@@ -38,7 +38,7 @@ ILProtector应该算是一款强度不是太高，兼容性还不错的壳，网
 
 ### 脱壳流程
 
-为了避免各种没有特别大意义的尝试，我们来看看文章开头提到的那个开源项目是怎么实现脱壳的。我们先在vs里面打开这个项目。（这个提供打包好的项目下载：[ILProtectorUnpacker by RexProg.7z](./ILProtectorUnpacker by RexProg.7z)）
+为了避免各种没有特别大意义的尝试，我们来看看文章开头提到的那个开源项目是怎么实现脱壳的。我们先在vs里面打开这个项目。（这个提供打包好的项目下载：[ILProtectorUnpacker by RexProg.7z](https://github.com/wwh1004/blog/blob/master/%5B.NET%5D%E8%AF%A6%E8%A7%A3ILProtector%E5%B9%B6%E5%86%99%E5%87%BA%E8%84%B1%E5%A3%B3%E6%9C%BA/ILProtectorUnpacker%20by%20RexProg.7z?raw=true)）
 
 找到Main方法，看看是怎么一回事（下面的注释都是我自己加的）：
 

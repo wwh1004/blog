@@ -1,10 +1,5 @@
-# 这是我的个人博客
-
-**不要点子文件查看博客内容，因为有些内容不在GitHub上！！！**
-
-我的时间不是太多，所以博客和所有GitHub仓库更新会很慢。
-
-PS：NCK是国内的一个.NET逆向组织，由 *凉游浅笔深画眉* 大佬创立！！！
+## 2018年11月18日
+[[.NET]详解ILProtector并写出脱壳机 by Wwh / NCK](https://github.com/wwh1004/blog/tree/master/%5B.NET%5D%E8%AF%A6%E8%A7%A3ILProtector%E5%B9%B6%E5%86%99%E5%87%BA%E8%84%B1%E5%A3%B3%E6%9C%BA)
 
 ## 2018年9月23日
 [[.NET]IntelliLock最新版 [Cracked by Wwh]](https://www.52pojie.cn/thread-799868-1-1.html)
