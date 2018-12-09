@@ -24,9 +24,9 @@ de4dot已经很久没有更新了，脱一些壳没有现成的工具。想要�
 
 ![Agile.NET字符串解密器方法](./Agile.NET字符串解密器方法.png)
 
-![Agile.NET字符串解密器方法-去代理调用](./Agile.NET字符串解密器方法-去代理调用.png)
+![Agile.NET字符串解密器方法-去代-理调用](./Agile.NET字符串解密器方法-去代-理调用.png)
 
-可以看到，这个解密很简单，主要是Xor。为了方便讲解，我把代理调用先去掉了，不然看不太出这个字符串解密器方法是什么样的。（等下会讲解Agile.NET的代理调用，这里不用着急。）
+可以看到，这个解密很简单，主要是Xor。为了方便讲解，我把代-理调用先去掉了，不然看不太出这个字符串解密器方法是什么样的。（等下会讲解Agile.NET的代-理调用，这里不用着急。）
 
 如此简单的解密，我们写一个静态解密当然可以，而且也不复杂，效率还更高，但是本文讲解的是动态解密。所以接下来我们讲解如何自己写一个动态解密。
 
@@ -132,27 +132,27 @@ if (instructionList[i].OpCode.Code == Code.Call && instructionList[i].Operand ==
 
 这样，我们的字符串解密工具就写完了。
 
-## Agile.NET的代理调用
+## Agile.NET的代-理调用
 
-这个代理调用的解密是这次讲解中最难的一个，如果读者没看懂上面的字符串解密，强烈建议跳过这一节。
+这个代-理调用的解密是这次讲解中最难的一个，如果读者没看懂上面的字符串解密，强烈建议跳过这一节。
 
 ### 分析
 
 我们还是先用dnSpy打开那个UnpackMe。
 
-![Agile.NET代理调用一览](./Agile.NET代理调用一览.png)
+![Agile.NET代-理调用一览](./Agile.NET代-理调用一览.png)
 
 可以看到部分调用外部方法被混淆了，调用当前程序集的方法不会被混淆。我们再调试看看，这些委托是什么。
 
-![Agile.NET代理调用调试-1](./Agile.NET代理调用调试-1.png)
+![Agile.NET代-理调用调试-1](./Agile.NET代-理调用调试-1.png)
 
 按F11，直接进入了这里，没有什么收获。
 
-![Agile.NET代理调用调试-2](./Agile.NET代理调用调试-2.png)
+![Agile.NET代-理调用调试-2](./Agile.NET代-理调用调试-2.png)
 
 我们看看哪里初始化了这个委托字段，我们可以发现点什么东西。
 
-![Agile.NET代理调用代理字段初始化-1](./Agile.NET代理调用代理字段初始化-1.png)
+![Agile.NET代-理调用代-理字段初始化-1](./Agile.NET代-理调用代-理字段初始化-1.png)
 
 我们进入dau方法，dnSpy反编译结果如下。
 
@@ -292,15 +292,15 @@ public class {FE3C441D-DF9D-407b-917D-0B4471A8296C}
 }
 ```
 
-这段代码还是比较简单的，传入代理类型的token，然后遍历类型中每个字段，通过字段名字获取代理方法的MemberRef Token，然后ReolveMethod。如果是静态方法，直接创建delegate，如果是实例方法，使用DynamicMethod创建一个方法来调用。静态解密可能还会比动态解密简单。
+这段代码还是比较简单的，传入代-理类型的token，然后遍历类型中每个字段，通过字段名字获取代-理方法的MemberRef Token，然后ReolveMethod。如果是静态方法，直接创建delegate，如果是实例方法，使用DynamicMethod创建一个方法来调用。静态解密可能还会比动态解密简单。
 
 ### 编写解密工具
 
 我们依然这样写一个框架。然后把代码添加到ExecuteImpl()中。
 
-![代理调用解密1-1](./代理调用解密1-1.png)
+![代-理调用解密1-1](./代-理调用解密1-1.png)
 
-我们按特征，找到代理字段初始化的地方。
+我们按特征，找到代-理字段初始化的地方。
 
 ``` csharp
 TypeDef[] globalTypes;
@@ -309,10 +309,10 @@ MethodDef decryptor;
 globalTypes = _moduleDef.Types.Where(t => t.Namespace == string.Empty).ToArray();
 // 查找所有命名空间为空的类型
 decryptor = globalTypes.Where(t => t.Name.StartsWith("{", StringComparison.Ordinal) && t.Name.EndsWith("}", StringComparison.Ordinal)).Single().Methods.Single(m => !m.IsInstanceConstructor && m.Parameters.Count == 1);
-// 查找代理解密方法
+// 查找代-理解密方法
 ```
 
-由于所有代理类的静态构造器都会自动解密出真实的方法，我们不需要手动调用代理方法解密器。我们只需要遍历这些代理类的字段，找出字段对应的MemberRef。
+由于所有代-理类的静态构造器都会自动解密出真实的方法，我们不需要手动调用代-理方法解密器。我们只需要遍历这些代-理类的字段，找出字段对应的MemberRef。
 
 ``` csharp
 foreach (TypeDef typeDef in globalTypes) {
@@ -321,11 +321,11 @@ foreach (TypeDef typeDef in globalTypes) {
 	cctor = typeDef.FindStaticConstructor();
 	if (cctor == null || !cctor.Body.Instructions.Any(i => i.OpCode == OpCodes.Call && i.Operand == decryptor))
 		continue;
-	// 查找出静态构造器调用了代理解密方法的类型
+	// 查找出静态构造器调用了代-理解密方法的类型
 }
 ```
 
-只要一个类的静态构造器调用了decryptor，就说明这个类是代理类。我们对代理类的字段进行遍历。
+只要一个类的静态构造器调用了decryptor，就说明这个类是代-理类。我们对代-理类的字段进行遍历。
 
 ``` csharp
 foreach (FieldInfo fieldInfo in _module.ResolveType(typeDef.MDToken.ToInt32()).GetFields(BindingFlags.NonPublic | BindingFlags.Static)) {
