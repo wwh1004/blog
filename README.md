@@ -1,3 +1,6 @@
+## 2018年12月09日
+[[.NET].NET下的动态解密与反动态解密 by Wwh / NCK](https://github.com/wwh1004/blog/tree/master/%5B.NET%5D.NET%E4%B8%8B%E7%9A%84%E5%8A%A8%E6%80%81%E8%A7%A3%E5%AF%86%E4%B8%8E%E5%8F%8D%E5%8A%A8%E6%80%81%E8%A7%A3%E5%AF%86)
+
 ## 2018年11月18日
 [[.NET]详解ILProtector并写出脱壳机 by Wwh / NCK](https://github.com/wwh1004/blog/tree/master/%5B.NET%5D%E8%AF%A6%E8%A7%A3ILProtector%E5%B9%B6%E5%86%99%E5%87%BA%E8%84%B1%E5%A3%B3%E6%9C%BA)
 
