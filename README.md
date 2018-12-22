@@ -1,3 +1,6 @@
+## 2018年12月22日
+[[.NET].NET下的终极反调试 by Wwh / NCK](https://github.com/wwh1004/blog/tree/master/%5B.NET%5D.NET%E4%B8%8B%E7%9A%84%E7%BB%88%E6%9E%81%E5%8F%8D%E8%B0%83%E8%AF%95)
+
 ## 2018年12月09日
 [[.NET].NET下的动态解密与反动态解密 by Wwh / NCK](https://github.com/wwh1004/blog/tree/master/%5B.NET%5D.NET%E4%B8%8B%E7%9A%84%E5%8A%A8%E6%80%81%E8%A7%A3%E5%AF%86%E4%B8%8E%E5%8F%8D%E5%8A%A8%E6%80%81%E8%A7%A3%E5%AF%86)
 
