@@ -1,3 +1,6 @@
+## 2019年02月03日
+[[.NET].NET控制流分析（二）-反混淆 by Wwh / NCK](https://github.com/wwh1004/blog/tree/master/%5B.NET%5D.NET%E6%8E%A7%E5%88%B6%E6%B5%81%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89-%E5%8F%8D%E6%B7%B7%E6%B7%86)
+
 ## 2019年01月29日
 [[.NET].NET控制流分析（一）-入门 by Wwh / NCK](https://github.com/wwh1004/blog/tree/master/%5B.NET%5D.NET%E6%8E%A7%E5%88%B6%E6%B5%81%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%80%EF%BC%89-%E5%85%A5%E9%97%A8)
 
