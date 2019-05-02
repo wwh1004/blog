@@ -1,3 +1,6 @@
+## 2019年05月02日
+[[其它]foobar2000 歌词搜索脚本](https://github.com/wwh1004/blog/tree/master/%5B%E5%85%B6%E5%AE%83%5Dfoobar2000%20%E6%AD%8C%E8%AF%8D%E6%90%9C%E7%B4%A2%E8%84%9A%E6%9C%AC)
+
 ## 2019年02月03日
 [[.NET].NET控制流分析（二）-反混淆 by Wwh / NCK](https://github.com/wwh1004/blog/tree/master/%5B.NET%5D.NET%E6%8E%A7%E5%88%B6%E6%B5%81%E5%88%86%E6%9E%90%EF%BC%88%E4%BA%8C%EF%BC%89-%E5%8F%8D%E6%B7%B7%E6%B7%86)
 

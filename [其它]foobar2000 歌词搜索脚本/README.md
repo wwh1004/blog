@@ -6,6 +6,10 @@
 
 **我只是在此基础上进行了修改：[github.com/wwh1004/Some-js-script-for-FB2K](https://github.com/wwh1004/Some-js-script-for-FB2K)**
 
+**我的修改版加强了对日语歌（主要是V家的）歌词的搜索能力，比如下面那个效果图的歌，可以匹配到其它歌手唱的**
+
+**V家的歌除了remix过或者其它的，所有翻唱的歌词基本上是一样的，所以这样匹配没什么特别大的问题**
+
 ## 使用方式
 
 1. 打开[github.com/wwh1004/Some-js-script-for-FB2K](https://github.com/wwh1004/Some-js-script-for-FB2K)，下载好"ncm.js"这个文件即可，其它2个不用管。
