@@ -184,6 +184,8 @@ CodeCracker的处理方法是直接Invoke，然后在hook到的compCompile里面
 
 运行RuntimeFunctionConfigGenerator.bat，会生成"JitUnpacker.RuntimeFunctions.CLR20.x86.config"和"JitUnpacker.RuntimeFunctions.CLR40.x86.config"这2个配置文件。
 
+![Alt text](./32.png)
+
 把要脱壳的文件，包括相关的dll一起复制到JitUnpacker.dll所在目录，shift+右键点击文件夹，选择在此处打开命令行窗口。
 
 可以先看看JitUnpacker参数
