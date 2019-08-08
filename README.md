@@ -1,3 +1,6 @@
+## 2019年08月08日
+[[.NET].NET JIT脱壳指南与工具源码](https://github.com/wwh1004/blog/tree/master/%5B.NET%5D.NET%20JIT%E8%84%B1%E5%A3%B3%E6%8C%87%E5%8D%97%E4%B8%8E%E5%B7%A5%E5%85%B7%E6%BA%90%E7%A0%81)
+
 ## 2019年05月02日
 [[其它]foobar2000 歌词搜索脚本](https://github.com/wwh1004/blog/tree/master/%5B%E5%85%B6%E5%AE%83%5Dfoobar2000%20%E6%AD%8C%E8%AF%8D%E6%90%9C%E7%B4%A2%E8%84%9A%E6%9C%AC)
 
