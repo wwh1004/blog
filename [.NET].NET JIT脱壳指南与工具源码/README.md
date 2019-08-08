@@ -122,7 +122,7 @@ Unpackers是脱壳逻辑的代码，实现IMethodDumper IUnpacker IUnpackerDetec
 
 ![Alt text](./17.png)
 
-这个是JitHook的接口，实现这个接口，为IMethodDumper提供所需信息即可。目前已经内置了CodeCracker脱壳机的hook方式（准确的说式yck1509的，CodeCracker只是做了些修改）和compileMethod虚表hook方式。
+这个是JitHook的接口，实现这个接口，为IMethodDumper提供所需信息即可。目前已经内置了CodeCracker脱壳机的hook方式（准确的说是yck1509的，CodeCracker只是做了些修改）和compileMethod虚表hook方式。
 
 ![Alt text](./18.png)
 
