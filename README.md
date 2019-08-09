@@ -1,3 +1,6 @@
+## 2019年08月09日
+[[.NET]反混淆VMP.NET之Mutation](https://github.com/wwh1004/blog/tree/master/%5B.NET%5D%E5%8F%8D%E6%B7%B7%E6%B7%86VMP.NET%E4%B9%8BMutation)
+
 ## 2019年08月08日
 [[.NET].NET JIT脱壳指南与工具源码](https://github.com/wwh1004/blog/tree/master/%5B.NET%5D.NET%20JIT%E8%84%B1%E5%A3%B3%E6%8C%87%E5%8D%97%E4%B8%8E%E5%B7%A5%E5%85%B7%E6%BA%90%E7%A0%81)
 
