@@ -100,7 +100,7 @@ class CMiniMdSchemaBase
 };
 ```
 
-在CMiniMdSchemaBase结构后面，紧跟着一个UINT32数组，元素数量是m_maskvalid表示的存在的表的数量。这个数组的元素按顺序表示了每个存在的表的行数。
+在CMiniMdSchemaBase结构后面，紧跟着一个UINT32数组，数组长度是m_maskvalid成员bit为1的数量。这个数组的元素按顺序表示了每个存在的表的行数。
 
 CLR加载.NET程序集时，这些成员都会被保存到CLR内部，所以这些成员也都是可以抹除的。**恢复时，我们主要关注哪些表是存在的，并且它们的行数分别是多少。通过这些数据我们可以恢复出m_maskvalid成员和行数数组**。
 
