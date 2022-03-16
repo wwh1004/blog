@@ -1,3 +1,6 @@
+## 2022年03月16日
+[[.NET].NET下绕过任意反Dump的方法](https://github.com/wwh1004/blog/tree/master/%5B.NET%5D.NET%E4%B8%8B%E7%BB%95%E8%BF%87%E4%BB%BB%E6%84%8F%E5%8F%8DDump%E7%9A%84%E6%96%B9%E6%B3%95)
+
 ## 2019年08月09日
 [[.NET]反混淆VMP.NET之Mutation](https://github.com/wwh1004/blog/tree/master/%5B.NET%5D%E5%8F%8D%E6%B7%B7%E6%B7%86VMP.NET%E4%B9%8BMutation)
 
